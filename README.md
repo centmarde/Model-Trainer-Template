@@ -1,4 +1,5 @@
-# Pest Classification API and GUI
+# Model Trainer Template with GUI and API
+This repository is based on my colleague AI developers work, thanks to https://github.com/jed-parsec
 
 This project provides a FastAPI-based backend (`app.py`) and a Streamlit-based GUI (`app-gui.py`) for classifying rice pests using a trained machine learning model (`model.keras`).
 
