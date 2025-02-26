@@ -1,0 +1,6 @@
+# Ignore virtual environment directory
+venv/
+# Ignore model_list directory and its contents
+model_list/
+# Ignore model.keras file
+model.keras
