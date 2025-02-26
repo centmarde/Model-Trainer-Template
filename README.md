@@ -41,7 +41,7 @@ model-api/
 │── main/
 │   ├── app.py          # FastAPI backend
 │   ├── app-gui.py      # Streamlit GUI
-│   ├── model.keras     # Trained model
+│   ├── model_list      # List of Trained Models
 │   ├── requirements.txt # Dependencies
 ```
 
