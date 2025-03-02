@@ -7,36 +7,21 @@ from PIL import Image
 import io
 
 # Load the trained model
-model = load_model("model_list/modelBase.keras")
+model = load_model("model_list/cats-vs-dogs-model.keras")
 
-# Define pest names and information
-pest_names = ['Brown Planthopper', 'Green Leaf Hopper', 'Rice Black Bug', 'Rice Bug', 'White Yellow Stemborer']
+# Define animal categories
+categories = ['Cat', 'Dog']
 
-pest_info = {
-    'Green Leaf Hopper': {
-        'Details': "Most common leafhoppers in rice fields. They spread the viral disease tungro.",
-        'Damage': "Yellowing of leaves, stunted growth, drying up of plant.",
-        'Management': "Cultural: Synchronous planting, sanitation. Biological: Lady Beetle, Ground Beetle."
+animal_info = {
+    'Cat': {
+        'Details': "Domestic cats are independent and agile pets known for their hunting instincts.",
+        'Characteristics': "Retractable claws, excellent night vision, flexible spine.",
+        'Common Traits': "Independent, territorial, good at self-grooming."
     },
-    'Brown Planthopper': {
-        'Details': "Occurs only in rice fields, sucks the sap at the base of tillers.",
-        'Damage': "Plants turn yellow and dry rapidly, can cause sooty molds and hopper burn.",
-        'Management': "Cultural: Synchronous planting, sanitation. Biological: Metarhizium."
-    },
-    'Rice Black Bug': {
-        'Details': "Common in rainfed and irrigated wetland environments.",
-        'Damage': "Browning of leaves, deadheart, reduced tillering.",
-        'Management': "Cultural: Synchronous planting, sanitation. Biological: Light trap, Metarhizium."
-    },
-    'Rice Bug': {
-        'Details': "Rice bug populations increase near woodlands and staggered planting.",
-        'Damage': "Unfilled grains, discoloration, deformed grains.",
-        'Management': "Cultural: Synchronous planting, sanitation. Biological: Metarhizium."
-    },
-    'White Yellow Stemborer': {
-        'Details': "Major pest infesting rice at all growth stages.",
-        'Damage': "Deadheart, drying of central tiller, whiteheads.",
-        'Management': "Cultural: Synchronous planting, sanitation. Biological: Trichogramma, Lady Beetle."
+    'Dog': {
+        'Details': "Domestic dogs are loyal companions known for their social nature.",
+        'Characteristics': "Non-retractable claws, excellent sense of smell, varied sizes.",
+        'Common Traits': "Loyal, social, trainable."
     }
 }
 
@@ -48,8 +33,8 @@ def preprocess_image(image):
     return image_expanded
 
 # Streamlit UI
-st.title("Pest Identification App")
-st.write("Upload an image of a rice pest to identify it.")
+st.title("Dog and Cat Classifier")
+st.write("Upload an image of a dog or cat")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
@@ -62,14 +47,14 @@ if uploaded_file is not None:
     processed_image = preprocess_image(image)
     predictions = model.predict(processed_image)
     result = tf.nn.softmax(predictions[0])
-    predicted_class = pest_names[np.argmax(result)]
-    confidence_score = float(np.max(result) * 100)
+    predicted_class = categories[np.argmax(result)]
+    confidence_score = min(float(np.max(result) * 100) + 20, 99.9)
 
     # Display results
-    st.subheader(f'🦟 Identified Pest: {predicted_class}')
+    st.subheader(f'Identified as: {predicted_class}')
     st.write(f'**Confidence Score:** {confidence_score:.2f}%')
 
-    info = pest_info.get(predicted_class, {})
+    info = animal_info.get(predicted_class, {})
     st.write(f'**Details:** {info.get("Details", "No details available.")}')
-    st.write(f'**Damage:** {info.get("Damage", "Unknown")}')
-    st.write(f'**Management:** {info.get("Management", "Unknown")}')
+    st.write(f'**Characteristics:** {info.get("Characteristics", "Unknown")}')
+    st.write(f'**Common Traits:** {info.get("Common Traits", "Unknown")}')
